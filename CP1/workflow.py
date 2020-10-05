@@ -10,9 +10,8 @@ Created on Thu Oct  1 22:00:02 2020
 
 import numpy as np
 
-#histories=10 #number of histories/cycles to run
 from setup import histories, slab, mid, Sigma_a, Sigma_c, Sigma_f, Sigma_s, Sigma_t  
-
+from col_type import col_type
 
 for n in range(histories):
     #STEP 1: new particle: sample position, energy, and angle
@@ -52,6 +51,5 @@ for n in range(histories):
     track_length=event_dist[event_type] #store the distance to collision
     #if event_type=0, pos gets adjusted then repeat from step 2
     
-    # if event_type==1: #for collisions, determine the collision type
-        #xi_coltype=np.random.rand() #generate a random number xi
-        #make a function to determine collision type
+    if event_type==1: #for collisions, determine the collision type
+        collision=col_type(reg)
