@@ -13,6 +13,10 @@ import numpy as np
 from setup import histories, slab, mid, Sigma_a, Sigma_c, Sigma_f, Sigma_s, Sigma_t  
 from col_type import col_type
 
+captures=0
+fissions=0
+scatters=0
+
 for n in range(histories):
     #STEP 1: new particle: sample position, energy, and angle
     pos=slab*np.random.rand() #position (x-coordinate) in cm
@@ -23,18 +27,24 @@ for n in range(histories):
     
     #sample energy from chi distribution - Do I need this?
     #sample angle isotropically - Do I need this?
-    ang=2*np.pi*np.random.rand()
-    mu=np.cos(ang)
+    xi_dir=np.random.rand()
+    if xi_dir<0.5:
+        direc=0 #indicates the neutron is moving in the -x direction
+    else:
+        direc=1 #indicates the neutron is moving in the +x direction
+    # ang=2*np.pi*np.random.rand()
+    # mu=np.cos(ang)
     
     
-    #STEP 2: determine distance to regional boundary
-    #distance to left boundary (x=0) = pos
-    dist_mid=np.absolute(pos-mid) #distance to region boundary in cm
-    #maybe dont use absval here, but instead use it in "distances" so I can get new pos later
-    dist_R=slab-pos #distance to right boundary (x=slab) in cm
-    distances=[pos,dist_mid,dist_R]
-    closest_bound=np.argmin(distances)
-    dist_bound=distances[closest_bound]
+    #STEP 2: determine distance to any boundary
+    if reg==0 and direc==0: #in left region and moving left - will cross L edge
+        dist_bound=pos #disante to left boundary = the neutron position
+    elif reg==0 and direc ==1: #in left region and moving right - will cross region boundary
+        dist_bound=mid-pos 
+    elif reg==1 and direc==0: #in right region and moving left - will cross region boundary
+        dist_bound=pos-mid
+    else:                   #in right region and moving right
+        dist_bound=slab-pos 
     
     
     #STEP 3: determine distance to next collision
@@ -53,3 +63,11 @@ for n in range(histories):
     
     if event_type==1: #for collisions, determine the collision type
         collision=col_type(reg)
+        
+    if collision==0: #capture
+        captures=captures+1 
+    if collision==1: #fission
+        fissions=fissions+1
+    if collision==2: #scattering
+        scatters=scatters+1
+        
