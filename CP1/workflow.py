@@ -29,6 +29,7 @@ for n in range(histories):
     #sample energy from chi distribution - Do I need this?
     #sample angle isotropically - Do I need this?
     xi_dir=np.random.rand()
+    #Because this is a 1D problem, the only direction we need to worry about is left or right
     if xi_dir<0.5:
         direc=0 #indicates the neutron is moving in the -x direction
     else:
@@ -68,7 +69,9 @@ for n in range(histories):
             captures=captures+1 
         if collision==1: #fission
             fissions=fissions+1
+            #tally fission location
         if collision==2: #scattering
             scatters=scatters+1
+            #sample new direction, then repeat steps 2-4
         
 # print(captures+fissions+scatters+crossings)        
