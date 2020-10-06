@@ -13,15 +13,10 @@ import numpy as np
 from setup import Sigma_c, Sigma_f, Sigma_s, Sigma_t
 
 def col_type(reg):
-    #ratio of collision cross sections to total
-    Cfrac=Sigma_c[reg]/Sigma_t[reg]
-    Ffrac=Sigma_f[reg]/Sigma_t[reg]
-    Sfrac=Sigma_s[reg]/Sigma_t[reg]
-    #normalize them
-    maxfrac=max(Cfrac,Ffrac,Sfrac)
-    Cnorm=Cfrac/maxfrac
-    Fnorm=Ffrac/maxfrac
-    Snorm=Sfrac/maxfrac
+    #normalize collision cross sections to total
+    Cnorm=Sigma_c[reg]/Sigma_t[reg]
+    Fnorm=Sigma_f[reg]/Sigma_t[reg]
+    Snorm=Sigma_s[reg]/Sigma_t[reg]
     #make a discrete pdf to sample from
     C=Cnorm
     F=Cnorm+Fnorm

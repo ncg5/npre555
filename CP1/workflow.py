@@ -16,6 +16,7 @@ from col_type import col_type
 captures=0
 fissions=0
 scatters=0
+crossings=0
 
 for n in range(histories):
     #STEP 1: new particle: sample position, energy, and angle
@@ -49,25 +50,25 @@ for n in range(histories):
     
     #STEP 3: determine distance to next collision
     xi_col=np.random.rand() #generate a random number xi
-    # if pos<mid: #region 1
-    #     dist_col=-np.log(1-xi_col)/Sigma_t1
-    # else: #region 2
-    #     dist_col=-np.log(1-xi_col)/Sigma_t2
     dist_col=-np.log(1-xi_col)/Sigma_t[reg]    
+    
     
     #STEP 4: determine if a collison or boundary crossing happens first
     event_dist=[dist_bound, dist_col] 
     event_type=np.argmin(event_dist) #0=boundary crossing, 1=collision
     track_length=event_dist[event_type] #store the distance to collision
-    #if event_type=0, pos gets adjusted then repeat from step 2
     
+    
+    if event_type==0: #pos gets adjusted then repeat from step 2
+        crossings=crossings+1
     if event_type==1: #for collisions, determine the collision type
         collision=col_type(reg)
         
-    if collision==0: #capture
-        captures=captures+1 
-    if collision==1: #fission
-        fissions=fissions+1
-    if collision==2: #scattering
-        scatters=scatters+1
+        if collision==0: #capture
+            captures=captures+1 
+        if collision==1: #fission
+            fissions=fissions+1
+        if collision==2: #scattering
+            scatters=scatters+1
         
+# print(captures+fissions+scatters+crossings)        
