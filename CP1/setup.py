@@ -8,7 +8,7 @@ Created on Mon Oct  5 13:24:19 2020
 #NPRE 555 CP 1
 #This file contains the necessary information to setup the problem, like geometry and material definitions
 
-histories=1
+histories=10
 
 #geometry
 slab=100 #slab thickness in cm
