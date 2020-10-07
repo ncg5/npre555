@@ -90,3 +90,7 @@ for m in range(cycles):
     #calculate k_eff
     k=nu*fissions/histories    
     k_save[m]=k
+    
+np.savetxt('keff',k_save)
+np.savetxt('flux',flux_save)
+np.savetxt('fluxbins',flux_bins)
