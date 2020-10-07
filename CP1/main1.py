@@ -14,7 +14,8 @@ captures=0
 fissions=0
 exits=0
 
-track_lenghts=np.zeros(histories)
+track_lenghts=np.zeros(histories) #maybe I don't need this?
+col_save=[] #to store collision locations
 
 for n in range(histories):
     print('new history')
@@ -67,7 +68,8 @@ for n in range(histories):
                 exits=exits+1
 
         else:   #collision 
-            track=track+dist_col    
+            track=track+dist_col
+            col_save.append(pos)
             print('collision')
             #determine type of collision
             collision=col_type(reg) #0=capture, 1=fission, 2=scatter
@@ -88,3 +90,6 @@ for n in range(histories):
         
         # print('do the loop again')
     track_lenghts[n]=track 
+
+col_loc=np.vstack(col_save)
+# flux=sum(track_lenghts)/(histories*slab) 
