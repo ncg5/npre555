@@ -6,8 +6,9 @@ Created on Tue Oct  6 21:44:57 2020
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 
-from setup import histories, slab, mid, Sigma_a, Sigma_c, Sigma_f, Sigma_s, Sigma_t
+from setup import nu, histories, slab, mid, Sigma_a, Sigma_c, Sigma_f, Sigma_s, Sigma_t, Nbins
 from col_type import col_type
 
 captures=0
@@ -18,7 +19,7 @@ track_lenghts=np.zeros(histories) #maybe I don't need this?
 col_save=[] #to store collision locations
 
 for n in range(histories):
-    print('new history')
+    # print('new history')
     track=0 #track length of each history
     
     #sample position and direction
@@ -51,47 +52,53 @@ for n in range(histories):
         #determine next event
         if dist_bound<dist_col: #crosses boundary
             track=track+dist_bound    
-            print('boundary crossing')
+            # print('boundary crossing')
             if reg==0 and direc==0: #in left region and moving left - will cross L edge
                 active=False #neutron leaves slab by left edge
-                print('leaves by left')
+                # print('leaves by left')
                 exits=exits+1
             elif reg==0 and direc ==1: #in left region and moving right - will cross region boundary
                 pos=mid+1e-10 #define new position (it can't be exactly on the border because it must be in one material or the other)
-                print('new position')
+                # print('new position')
             elif reg==1 and direc==0: #in right region and moving left - will cross region boundary
                 pos=mid-1e-10 #define new position
-                print('new position')
+                # print('new position')
             else:                   #in right region and moving right
                 active=False #neutron leaves slab by right edge
-                print('leaves by right')
+                # print('leaves by right')
                 exits=exits+1
 
         else:   #collision 
             track=track+dist_col
             if pos not in col_save:
                 col_save.append(pos)
-            print('collision')
+            # print('collision')
             #determine type of collision
             collision=col_type(reg) #0=capture, 1=fission, 2=scatter
             
             if collision==0:
-                print('capture')
+                # print('capture')
                 active=False
                 captures=captures+1
             elif collision==1:
-                print('fission')
+                # print('fission')
                 #record position
                 active=False
                 fissions=fissions+1
             else: 
-                print('scatter')
+                # print('scatter')
                 #determine new direction: assume isotropic, so both directions are equally likely
                 direc=np.random.randint(0,2) #0=going left, 1=going right
         
         # print('do the loop again')
     track_lenghts[n]=track 
 
+#find the scalar flux as a function of position
 col_loc=np.vstack(col_save)
 #sort collision locations into a histogram to get phi(x)
- 
+col_hist, flux_bin_edges=np.histogram(col_loc,bins=Nbins,range=(0,slab)) 
+flux_bins=(flux_bin_edges[0:-1]+flux_bin_edges[1:])/2
+plt.plot(flux_bins,col_hist)
+
+#calculate k_eff
+k=nu*fissions/histories
