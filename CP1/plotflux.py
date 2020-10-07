@@ -7,6 +7,7 @@ Created on Wed Oct  7 02:06:27 2020
 
 import numpy as np
 import matplotlib.pyplot as plt
+from setup import inactive_cycles
 plt.rcParams['mathtext.default'] = 'regular'
 plt.rcParams.update({'font.size': 20})  #general font size (axis labels)
 plt.rc('legend', fontsize=12)    # legend fontsize
@@ -15,7 +16,11 @@ plt.rc('axes', linewidth=2) #thickness of axis lines
 flux=np.loadtxt('flux')
 bins=np.loadtxt('fluxbins')
 
-plt.plot(bins,flux[:,-1])
+flux_res=np.zeros(len(flux)) #flux result
+for i in range(len(flux)):
+    flux_res[i]=np.mean(flux[i,inactive_cycles:])
+
+plt.plot(bins,flux_res)
 # leg=plt.legend()    #whatever legend commands you need
 # leg.set_title('Neutron Energy (keV)', prop = {'size':12})   #legend title font size
 # leg.get_frame().set_linewidth(2)    #thickness of legend border

@@ -7,7 +7,7 @@ Created on Wed Oct  7 02:13:44 2020
 
 import numpy as np
 import matplotlib.pyplot as plt
-from setup import cycles
+from setup import cycles, inactive_cycles
 
 plt.rcParams['mathtext.default'] = 'regular'
 plt.rcParams.update({'font.size': 20})  #general font size (axis labels)
@@ -17,16 +17,11 @@ plt.rc('axes', linewidth=2) #thickness of axis lines
 keff=np.loadtxt('keff')
 
 plt.plot(keff)
-# leg=plt.legend()    #whatever legend commands you need
-# leg.set_title('Neutron Energy (keV)', prop = {'size':12})   #legend title font size
-# leg.get_frame().set_linewidth(2)    #thickness of legend border
-# leg.get_frame().set_edgecolor("black")  #legend border color
 plt.xlim(0,cycles-1)
-# plt.ylim(1,1e4)
+plt.ylim(1.125,1.225)
 plt.xlabel('Cycle #')
-plt.ylabel('k_eff')
-# plt.title('Pulse Integral Distribution')
+plt.ylabel('Multiplication factor')
 plt.grid()
-# plt.minorticks_on()
-# plt.tick_params('both', length=10, width=2, which='major')  #axis major tick marks on both axes
-# plt.tick_params('both', length=8, width=1, which='minor')   #axis minor tick marks on both axes
+
+k_res=np.mean(keff[inactive_cycles:]) #k result
+print('The multiplication factor is '+str(k_res))

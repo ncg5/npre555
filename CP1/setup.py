@@ -10,6 +10,7 @@ Created on Mon Oct  5 13:24:19 2020
 
 histories=5000
 cycles=12
+inactive_cycles=6 
 Nbins=20 #bins for plotting flux
 
 #geometry
