@@ -8,9 +8,9 @@ Created on Mon Oct  5 13:24:19 2020
 #NPRE 555 CP 1
 #This file contains the necessary information to setup the problem, like geometry and material definitions
 
-histories=100
-cycles=3
-Nbins=10 #bins for plotting flux
+histories=5000
+cycles=12
+Nbins=20 #bins for plotting flux
 
 #geometry
 slab=100 #slab thickness in cm

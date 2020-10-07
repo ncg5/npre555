@@ -7,6 +7,8 @@ Created on Wed Oct  7 02:13:44 2020
 
 import numpy as np
 import matplotlib.pyplot as plt
+from setup import cycles
+
 plt.rcParams['mathtext.default'] = 'regular'
 plt.rcParams.update({'font.size': 20})  #general font size (axis labels)
 plt.rc('legend', fontsize=12)    # legend fontsize
@@ -19,7 +21,7 @@ plt.plot(keff)
 # leg.set_title('Neutron Energy (keV)', prop = {'size':12})   #legend title font size
 # leg.get_frame().set_linewidth(2)    #thickness of legend border
 # leg.get_frame().set_edgecolor("black")  #legend border color
-plt.xlim(0,2)
+plt.xlim(0,cycles-1)
 # plt.ylim(1,1e4)
 plt.xlabel('Cycle #')
 plt.ylabel('k_eff')
