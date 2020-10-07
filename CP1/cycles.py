@@ -8,10 +8,11 @@ Created on Tue Oct  6 21:44:57 2020
 import numpy as np
 import matplotlib.pyplot as plt
 
-from setup import cycles, nu, histories, slab, mid, Sigma_a, Sigma_c, Sigma_f, Sigma_s, Sigma_t, Nbins
+from setup import cycles, nu, histories, slab, mid, Nbins, Sigma_t
 from col_type import col_type
 
-
+k_save=np.zeros(cycles)
+flux_save=np.zeros((Nbins,cycles))
 
 fis_loc=slab*np.random.rand(histories) #fission locations. Start with a random distribution of locations for new particles
 
@@ -108,7 +109,9 @@ for m in range(cycles):
     #sort collision locations into a histogram to get phi(x)
     col_hist, flux_bin_edges=np.histogram(col_loc,bins=Nbins,range=(0,slab)) 
     flux_bins=(flux_bin_edges[0:-1]+flux_bin_edges[1:])/2
+    flux_save[:,m]=col_hist
     # plt.plot(flux_bins,col_hist)
     
     #calculate k_eff
-    k=nu*fissions/histories
+    k=nu*fissions/histories    
+    k_save[m]=k

@@ -9,7 +9,7 @@ Created on Mon Oct  5 13:24:19 2020
 #This file contains the necessary information to setup the problem, like geometry and material definitions
 
 histories=100
-cycles=2
+cycles=3
 Nbins=10 #bins for plotting flux
 
 #geometry
