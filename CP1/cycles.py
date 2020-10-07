@@ -18,20 +18,12 @@ fis_loc=slab*np.random.rand(histories) #fission locations. Start with a random d
 
 for m in range(cycles):
 
-    track_lenghts=np.zeros(histories) #maybe I don't need this?
     col_save=[] #to store collision locations 
     fis_save=[] #to store fission locations
+    fissions=0 #number of fissions in the current cylce
     
-    captures=0
-    fissions=0
-    exits=0
-    
-    for n in range(histories):
-        # print('new history')
-        track=0 #track length of each history
-        
+    for n in range(histories):        
         #sample position and direction
-        # pos=slab*np.random.rand()
         pos=fis_loc[np.random.randint(0,len(fis_loc))]
         direc=np.random.randint(0,2) #0=going left, 1=going right
         #Because this problem is 1D, the only sense of an angle that we need is whether the neutron is moving right or left
@@ -59,49 +51,32 @@ for m in range(cycles):
             dist_col=-np.log(1-xi_col)/Sigma_t[reg]
             
             #determine next event
-            if dist_bound<dist_col: #crosses boundary
-                track=track+dist_bound    
-                # print('boundary crossing')
+            if dist_bound<dist_col: #crosses boundary   
                 if reg==0 and direc==0: #in left region and moving left - will cross L edge
                     active=False #neutron leaves slab by left edge
-                    # print('leaves by left')
-                    exits=exits+1
                 elif reg==0 and direc ==1: #in left region and moving right - will cross region boundary
                     pos=mid+1e-10 #define new position (it can't be exactly on the border because it must be in one material or the other)
-                    # print('new position')
                 elif reg==1 and direc==0: #in right region and moving left - will cross region boundary
                     pos=mid-1e-10 #define new position
-                    # print('new position')
                 else:                   #in right region and moving right
                     active=False #neutron leaves slab by right edge
-                    # print('leaves by right')
-                    exits=exits+1
     
             else:   #collision 
-                track=track+dist_col
-                if pos not in col_save:
+                if pos not in col_save: #don't count scatters in same location
                     col_save.append(pos)
-                # print('collision')
                 #determine type of collision
                 collision=col_type(reg) #0=capture, 1=fission, 2=scatter
                 
                 if collision==0:
-                    # print('capture')
                     active=False
-                    captures=captures+1
                 elif collision==1:
-                    # print('fission')
-                    #record position
                     active=False
                     fissions=fissions+1
+                    #record position
                     fis_save.append(pos)
                 else: 
-                    # print('scatter')
                     #determine new direction: assume isotropic, so both directions are equally likely
                     direc=np.random.randint(0,2) #0=going left, 1=going right
-            
-            # print('do the loop again')
-        track_lenghts[n]=track 
     
     col_loc=np.vstack(col_save)
     fis_loc=np.vstack(fis_save)
