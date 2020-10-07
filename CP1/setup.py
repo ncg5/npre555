@@ -9,7 +9,8 @@ Created on Mon Oct  5 13:24:19 2020
 #This file contains the necessary information to setup the problem, like geometry and material definitions
 
 histories=100
-Nbins=10
+cycles=2
+Nbins=10 #bins for plotting flux
 
 #geometry
 slab=100 #slab thickness in cm
