@@ -69,7 +69,8 @@ for n in range(histories):
 
         else:   #collision 
             track=track+dist_col
-            col_save.append(pos)
+            if pos not in col_save:
+                col_save.append(pos)
             print('collision')
             #determine type of collision
             collision=col_type(reg) #0=capture, 1=fission, 2=scatter
@@ -92,4 +93,5 @@ for n in range(histories):
     track_lenghts[n]=track 
 
 col_loc=np.vstack(col_save)
-# flux=sum(track_lenghts)/(histories*slab) 
+#sort collision locations into a histogram to get phi(x)
+ 
